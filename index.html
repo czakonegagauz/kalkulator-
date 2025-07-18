@@ -1,292 +1,41 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Калькулятор валют</title>
-<style>
-  :root {
-    --bg-color: #121212;
-    --text-primary: #e0e0e0;
-    --text-secondary: #888888;
-    --green-light: #34d058;
-    --green-dark: #28a745;
-    --yellow-bg: #f4d35e;
-    --input-bg: #1e1e1e;
-    --input-border: #333333;
-    --btn-bg: linear-gradient(135deg, #2ecc71, #28a745);
-    --btn-bg-hover: linear-gradient(135deg, #28a745, #218838);
-    --shadow-btn: rgba(46, 204, 113, 0.4);
-    --shadow-result: rgba(46, 204, 113, 0.3);
-    --orange-dark: #b35200;
-    --orange-light: #ff7f11;
-  }
-
-  body {
-    margin: 0;
-    background-color: var(--bg-color);
-    background-image: url('https://img.lovepik.com/background/20211021/large/lovepik-scientific-and-technological-line-background-image_500557824.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: relative;
-    color: var(--text-primary);
-    font-family: 'Inter', sans-serif;
-    max-width: 420px;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 40px 20px 60px;
-    user-select: none;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  body::before {
-    content: "";
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-color: rgba(18,18,18,0.75);
-    pointer-events: none;
-    z-index: -1;
-  }
-
-  .logo {
-    text-align: center;
-    font-weight: 800;
-    font-size: 32px;
-    letter-spacing: 3px;
-    background: linear-gradient(90deg, var(--orange-dark), var(--orange-light));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 8px;
-  }
-
-  .slogan {
-    text-align: center;
-    font-weight: 500;
-    font-size: 12px;
-    color: var(--bg-color);
-    background: var(--yellow-bg);
-    padding: 8px 14px;
-    border-radius: 12px;
-    max-width: 280px;
-    margin: 0 auto 36px;
-    line-height: 1.3;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  }
-
-  label {
-    display: block;
-    font-weight: 600;
-    font-size: 15px;
-    margin-bottom: 10px;
-    color: #bbb;
-  }
-
-  input[type=number] {
-    width: 100%;
-    padding: 16px 16px;
-    font-size: 20px;
-    border: 1.5px solid var(--input-border);
-    border-radius: 10px;
-    background-color: var(--input-bg);
-    color: var(--text-primary);
-    outline: none;
-    transition: border-color 0.25s ease, box-shadow 0.25s ease;
-    box-shadow: inset 0 0 8px #00000070;
-  }
-  input[type=number]:focus {
-    border-color: var(--green-light);
-    box-shadow: 0 0 12px var(--green-light);
-  }
-
-  .percent-bar-container {
-    width: 100%;
-    height: 14px;
-    background: #2a2a2a;
-    border-radius: 12px;
-    overflow: hidden;
-    margin: 24px 0 36px;
-    box-shadow: inset 0 0 6px #000000aa;
-  }
-
-  .percent-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #34d058, #2ecc71);
-    width: 0;
-    border-radius: 12px 0 0 12px;
-    transition: width 1s ease;
-  }
-
-  .result {
-    background-color: var(--input-bg);
-    border-left: 6px solid var(--green-light);
-    padding: 22px 26px;
-    border-radius: 12px;
-    font-size: 18px;
-    margin-bottom: 36px;
-    box-shadow: 0 4px 15px var(--shadow-result);
-    min-height: 90px;
-    line-height: 1.4;
-    font-weight: 600;
-  }
-
-  button {
-    width: 100%;
-    padding: 18px 0;
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--bg-color);
-    background: var(--btn-bg);
-    border: none;
-    border-radius: 14px;
-    cursor: pointer;
-    box-shadow: 0 8px 15px var(--shadow-btn);
-    transition: background 0.3s ease, box-shadow 0.3s ease;
-    user-select: none;
-  }
-  button:disabled {
-    background: #555555;
-    box-shadow: none;
-    cursor: not-allowed;
-  }
-  button:not(:disabled):hover {
-    background: var(--btn-bg-hover);
-    box-shadow: 0 10px 20px #21963acc;
-  }
-
-  #status {
-    margin-top: 18px;
-    font-size: 15px;
-    color: var(--green-light);
-    text-align: center;
-    min-height: 22px;
-    font-weight: 600;
-    user-select: text;
-  }
-
-  footer {
-    margin-top: 48px;
-    font-size: 12px;
-    color: #444;
-    text-align: center;
-    user-select: none;
-  }
-
-</style>
+  <meta charset="UTF-8" />
+  <title>Курс BTC/USDT</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-color: #000;
+      color: #0f0;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    h1 {
+      color: #fff;
+      font-size: 24px;
+    }
+    #price {
+      font-size: 32px;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
+  <h1>🔰 Курс BTC/USDT (Bybit)</h1>
+  <div id="price">Загрузка...</div>
 
-  <div class="logo">Калькулятор валют</div>
-  <div class="slogan">Просто. Быстро.<br>Валюта в движении. Всегда.</div>
-
-  <label for="amount">Введите сумму</label>
-  <input type="number" id="amount" step="0.01" oninput="calculate()" min="0" placeholder="Например, 5000" />
-
-  <div class="percent-bar-container" aria-label="Шкала процента наценки">
-    <div class="percent-bar-fill" id="percentBar"></div>
-  </div>
-
-  <div class="result" id="output">Итоговая сумма появится здесь</div>
-
-  <button id="sendBtn" onclick="sendToTelegram()" disabled>Отправить оператору</button>
-
-  <div id="status"></div>
-
-  <footer>© 2025 обмен 24/7</footer>
-
-<script>
-  const scale = [
-    { min: 1000, max: 3000, start: 70, end: 40 },
-    { min: 3000, max: 5000, start: 40, end: 35 },
-    { min: 5000, max: 10000, start: 35, end: 20 },
-    { min: 10000.01, max: Infinity, start: 25, end: 25 }
-  ];
-
-  function getPercent(amount) {
-    for (const range of scale) {
-      if (amount >= range.min && amount <= range.max) {
-        const ratio = (amount - range.min) / (range.max - range.min);
-        return range.start + (range.end - range.start) * ratio;
-      }
-    }
-    return 0;
-  }
-
-  let currentTotal = 0;
-  let clientId = null;
-
-  function calculate() {
-    const amount = parseFloat(document.getElementById("amount").value) || 0;
-
-    let percent = 0;
-    if (amount < 1000) {
-      percent = 0;
-    } else {
-      percent = getPercent(amount);
-    }
-
-    const fee = amount * (percent / 100);
-    const total = amount + fee;
-    currentTotal = total;
-
-    document.getElementById("output").innerHTML = `
-      Комиссия: ${fee.toFixed(2)} ₽<br>
-      <strong>Итог: ${total.toFixed(2)} ₽</strong>
-    `;
-
-    const bar = document.getElementById("percentBar");
-    bar.style.width = percent + "%";
-
-    document.getElementById("sendBtn").disabled = amount === 0;
-    document.getElementById("status").textContent = '';
-  }
-
-  async function sendToTelegram() {
-    const botToken = "7825692414:AAHci2zncI1dTEovctk65SS6rEgoFLzaiXk";       // Вставь сюда токен
-    const chatId = "5091528006";             // Вставь сюда chat_id
-
-    const message = `💳 Новый запрос\nID клиента: ${clientId}\nСумма с наценкой: ${currentTotal.toFixed(2)} ₽`;
-
-    const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
-
-    const btn = document.getElementById("sendBtn");
-    btn.disabled = true;
-    btn.textContent = "Отправляем...";
-
-    try {
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ chat_id: chatId, text: message })
+  <script>
+    fetch("https://api.bybit.com/v2/public/tickers")
+      .then(response => response.json())
+      .then(data => {
+        const btc = data.result.find(t => t.symbol === "BTCUSDT");
+        document.getElementById("price").textContent = `$${parseFloat(btc.last_price).toFixed(2)}`;
+      })
+      .catch(() => {
+        document.getElementById("price").textContent = "Ошибка загрузки курса";
       });
-
-      if (!res.ok) throw new Error("Ошибка API");
-
-      document.getElementById("status").textContent = "✅ Отправлено оператору";
-      btn.textContent = "Отправить оператору";
-
-      if (window.Telegram && Telegram.WebApp) {
-        setTimeout(() => {
-          Telegram.WebApp.close();
-        }, 1500);
-      }
-    } catch (e) {
-      document.getElementById("status").textContent = "❌ Ошибка при отправке";
-      btn.textContent = "Отправить оператору";
-    } finally {
-      if (!btn.disabled) btn.disabled = false;
-    }
-  }
-
-  window.onload = function () {
-    if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe?.user) {
-      clientId = Telegram.WebApp.initDataUnsafe.user.id;
-    } else {
-      clientId = "неизвестен";
-    }
-  };
-</script>
-
+  </script>
 </body>
 </html>
