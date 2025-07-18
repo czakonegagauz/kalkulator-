@@ -2,23 +2,30 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>Курс BTC/USDT</title>
+  <title>Курс BTC/USDT (Bybit)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       background-color: #000;
       color: #0f0;
-      font-family: Arial, sans-serif;
+      font-family: 'Arial', sans-serif;
       text-align: center;
-      padding: 50px;
+      padding: 40px;
     }
     h1 {
       color: #fff;
       font-size: 24px;
+      margin-bottom: 10px;
     }
     #price {
-      font-size: 32px;
+      font-size: 36px;
+      font-weight: bold;
       margin-top: 20px;
+    }
+    .footer {
+      margin-top: 40px;
+      font-size: 12px;
+      color: #888;
     }
   </style>
 </head>
@@ -26,16 +33,24 @@
   <h1>🔰 Курс BTC/USDT (Bybit)</h1>
   <div id="price">Загрузка...</div>
 
+  <div class="footer">Данные обновляются каждые 60 секунд</div>
+
   <script>
-    fetch("https://api.bybit.com/v2/public/tickers")
-      .then(response => response.json())
-      .then(data => {
+    async function loadPrice() {
+      try {
+        const corsUrl = "https://corsproxy.io/?" + encodeURIComponent("https://api.bybit.com/v2/public/tickers");
+        const response = await fetch(corsUrl);
+        const data = await response.json();
         const btc = data.result.find(t => t.symbol === "BTCUSDT");
         document.getElementById("price").textContent = `$${parseFloat(btc.last_price).toFixed(2)}`;
-      })
-      .catch(() => {
-        document.getElementById("price").textContent = "Ошибка загрузки курса";
-      });
+      } catch (e) {
+        document.getElementById("price").textContent = "⚠️ Ошибка загрузки";
+        console.error(e);
+      }
+    }
+
+    loadPrice();
+    setInterval(loadPrice, 60000); // обновление каждую минуту
   </script>
 </body>
 </html>
