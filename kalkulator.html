@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Курс USDT</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background-color: #f8f9fa;
+      color: #212529;
+      margin: 0;
+      padding: 2em;
+      text-align: center;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 0.5em;
+    }
+    #price {
+      font-size: 36px;
+      color: #28a745;
+      margin: 0.5em 0;
+    }
+    .time {
+      font-size: 14px;
+      color: #6c757d;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>💱 Курс USDT → RUB</h1>
+    <div id="price">Загрузка...</div>
+    <div class="time" id="time">—</div>
+  </div>
+
+  
+  <script>
+    async function fetchRate() {
+      try {
+        const res = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=tether&vs_currencies=rub");
+        const data = await res.json();
+        const price = data.tether.rub;
+        document.getElementById("price").textContent = price.toFixed(2) + " ₽";
+        document.getElementById("time").textContent = "Обновлено: " + new Date().toLocaleTimeString();
+      } catch (e) {
+        document.getElementById("price").textContent = "Ошибка загрузки";
+        document.getElementById("time").textContent = "";
+      }
+    }
+
+    fetchRate();
+    setInterval(fetchRate, 10000); // обновление каждые 10 сек
+  </script>
+
+</body>
+</html>
