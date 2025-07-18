@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Обмен 24/7 — Калькулятор</title>
+<title>Калькулятор валют</title>
 <style>
   :root {
     --bg-color: #121212;
@@ -18,6 +18,8 @@
     --btn-bg-hover: linear-gradient(135deg, #28a745, #218838);
     --shadow-btn: rgba(46, 204, 113, 0.4);
     --shadow-result: rgba(46, 204, 113, 0.3);
+    --orange-dark: #b35200;
+    --orange-light: #ff7f11;
   }
 
   body {
@@ -53,7 +55,7 @@
     font-weight: 800;
     font-size: 32px;
     letter-spacing: 3px;
-    background: linear-gradient(90deg, #2ecc71, #34d058);
+    background: linear-gradient(90deg, var(--orange-dark), var(--orange-light));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 8px;
@@ -98,23 +100,13 @@
     box-shadow: 0 0 12px var(--green-light);
   }
 
-  .scale {
-    margin: 24px 0 20px;
-    font-size: 14px;
-    color: var(--text-secondary);
-    line-height: 1.6;
-    user-select: none;
-    border-left: 3px solid var(--green-light);
-    padding-left: 14px;
-  }
-
   .percent-bar-container {
     width: 100%;
     height: 14px;
     background: #2a2a2a;
     border-radius: 12px;
     overflow: hidden;
-    margin-bottom: 36px;
+    margin: 24px 0 36px;
     box-shadow: inset 0 0 6px #000000aa;
   }
 
@@ -185,18 +177,11 @@
 </head>
 <body>
 
-  <div class="logo">🔰обмен 24/7🔰</div>
+  <div class="logo">Калькулятор валют</div>
   <div class="slogan">Просто. Быстро.<br>Валюта в движении. Всегда.</div>
 
   <label for="amount">Введите сумму</label>
   <input type="number" id="amount" step="0.01" oninput="calculate()" min="0" placeholder="Например, 5000" />
-
-  <div class="scale">
-    1000–3000 ₽ — от 70% до 40%<br />
-    3000–5000 ₽ — от 40% до 35%<br />
-    5000–10000 ₽ — от 35% до 20%<br />
-    10000+ ₽ — 25%
-  </div>
 
   <div class="percent-bar-container" aria-label="Шкала процента наценки">
     <div class="percent-bar-fill" id="percentBar"></div>
@@ -246,12 +231,10 @@
     currentTotal = total;
 
     document.getElementById("output").innerHTML = `
-      Наценка: ${percent.toFixed(2)}%<br>
       Комиссия: ${fee.toFixed(2)} ₽<br>
       <strong>Итог: ${total.toFixed(2)} ₽</strong>
     `;
 
-    // Обновляем ширину полосы с анимацией
     const bar = document.getElementById("percentBar");
     bar.style.width = percent + "%";
 
@@ -260,8 +243,8 @@
   }
 
   async function sendToTelegram() {
-    const botToken = "ВАШ_ТОКЕН_БОТА";       // Вставь сюда токен
-    const chatId = "ВАШ_CHAT_ID";             // Вставь сюда chat_id
+    const botToken = "7825692414:AAHci2zncI1dTEovctk65SS6rEgoFLzaiXk";       // Вставь сюда токен
+    const chatId = "5091528006";             // Вставь сюда chat_id
 
     const message = `💳 Новый запрос\nID клиента: ${clientId}\nСумма с наценкой: ${currentTotal.toFixed(2)} ₽`;
 
