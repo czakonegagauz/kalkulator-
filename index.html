@@ -3,79 +3,106 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Калькулятор наценки + Telegram</title>
+  <title>Обмен 24/7</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      background-color: #0d0d0d;
+      color: #ffffff;
+      font-family: "Arial", sans-serif;
       max-width: 400px;
-      margin: 30px auto;
-      padding: 0 15px;
-      background: #f0f0f5;
-      color: #222;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .logo {
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      background: linear-gradient(90deg, #00aa55, #00ff90);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+    .slogan {
+      background-color: #ffcc00;
+      color: #000;
+      text-align: center;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      margin-bottom: 20px;
     }
     label {
-      font-weight: 600;
-      margin-top: 15px;
+      font-weight: bold;
+      margin-bottom: 8px;
       display: block;
     }
     input[type=number] {
       width: 100%;
-      padding: 14px 12px;
+      padding: 14px;
       font-size: 18px;
       border-radius: 8px;
-      border: 1px solid #ccc;
-      margin-top: 8px;
-      box-sizing: border-box;
-      -webkit-appearance: none;
-      -moz-appearance: textfield;
+      border: none;
+      outline: none;
+      background-color: #1a1a1a;
+      color: white;
+      margin-bottom: 20px;
     }
-    #output {
-      margin-top: 25px;
-      font-size: 20px;
-      font-weight: 700;
-      background: white;
-      padding: 15px 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 8px rgba(0,0,0,0.12);
+    .result {
+      background-color: #1c1c1c;
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    .scale {
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: #bbb;
+    }
+    .scale div {
+      margin: 4px 0;
     }
     button {
-      margin-top: 25px;
       width: 100%;
       padding: 15px;
       font-size: 18px;
-      background: #007bff;
-      color: white;
+      background-color: #00ff90;
+      color: #000;
+      font-weight: bold;
       border: none;
       border-radius: 10px;
       cursor: pointer;
-      user-select: none;
-    }
-    button:disabled {
-      background: #a0a0a0;
-      cursor: not-allowed;
     }
     #status {
       margin-top: 15px;
-      font-weight: 600;
-      color: green;
+      font-size: 14px;
+      color: #00ff90;
+      text-align: center;
     }
   </style>
 </head>
 <body>
 
-  <h1>Калькулятор наценки</h1>
+  <div class="logo">🔰обмен 24/7🔰</div>
+  <div class="slogan">Просто. Быстро. Валюта в движении. Всегда.</div>
 
-  <label for="amount">Введите сумму:</label>
-  <input type="number" id="amount" step="0.01" value="0" oninput="calculate()" inputmode="decimal" />
+  <label for="amount">Введите сумму</label>
+  <input type="number" id="amount" step="0.01" oninput="calculate()" />
 
-  <div id="output"></div>
+  <div class="scale">
+    <div>0–1000 ₽ — 5%</div>
+    <div>1000.01–5000 ₽ — 4%</div>
+    <div>5000.01–10000 ₽ — 3.5%</div>
+    <div>10000.01+ ₽ — 3%</div>
+  </div>
 
-  <button id="sendBtn" onclick="sendToTelegram()" disabled>Отправить оператору</button>
+  <div class="result" id="output">Итоговая сумма появится здесь</div>
+
+  <button id="sendBtn" onclick="sendToTelegram()" disabled>Отправить запрос</button>
 
   <div id="status"></div>
 
   <script>
-    // Процентная шкала
     const scale = [
       [0, 1000, 5.0],
       [1000.01, 5000, 4.0],
@@ -84,9 +111,10 @@
     ];
 
     let currentTotal = 0;
+    let clientId = null;
 
     function calculate() {
-      const amount = parseFloat(document.getElementById('amount').value) || 0;
+      const amount = parseFloat(document.getElementById("amount").value) || 0;
       let percent = 0;
 
       for (const [min, max, p] of scale) {
@@ -100,52 +128,53 @@
       const total = amount + fee;
       currentTotal = total;
 
-      document.getElementById('output').innerHTML = `
-        Процент наценки: ${percent.toFixed(2)}%<br>
-        Наценка: ${fee.toFixed(2)}<br>
-        Итоговая сумма: ${total.toFixed(2)}
+      document.getElementById("output").innerHTML = `
+        Наценка: ${percent.toFixed(2)}%<br>
+        Комиссия: ${fee.toFixed(2)} ₽<br>
+        <strong>Итог: ${total.toFixed(2)} ₽</strong>
       `;
 
-      document.getElementById('sendBtn').disabled = amount === 0;
-      document.getElementById('status').textContent = '';
+      document.getElementById("sendBtn").disabled = amount === 0;
+      document.getElementById("status").textContent = '';
     }
 
     async function sendToTelegram() {
-      // Настройки твоего бота — замени токен и chat_id на реальные
-      const botToken = '7825692414:AAHci2zncI1dTEovctk65SS6rEgoFLzaiXk';
-      const chatId = '5091528006';
+      const botToken = "7825692414:AAHci2zncI1dTEovctk65SS6rEgoFLzaiXk";       // вставь токен
+      const chatId = "5091528006";           // вставь chat_id
 
-      const message = `Новая сумма от клиента: ${currentTotal.toFixed(2)}`;
+      const message = `💳 Новый запрос\nID клиента: ${clientId}\nСумма с наценкой: ${currentTotal.toFixed(2)} ₽`;
 
       const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
-      // Блокируем кнопку и показываем статус
-      const btn = document.getElementById('sendBtn');
-      btn.disabled = true;
-      document.getElementById('status').textContent = 'Отправляем...';
+      document.getElementById("sendBtn").disabled = true;
+      document.getElementById("status").textContent = "Отправляем...";
 
       try {
         const res = await fetch(url, {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            chat_id: chatId,
-            text: message
-          })
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ chat_id: chatId, text: message })
         });
 
-        if (!res.ok) throw new Error(`Ошибка: ${res.status}`);
+        if (!res.ok) throw new Error("Ошибка API");
 
-        document.getElementById('status').textContent = 'Отправлено успешно ✅';
-      } catch (err) {
-        document.getElementById('status').textContent = 'Ошибка при отправке ⚠️';
-        console.error(err);
+        document.getElementById("status").textContent = "✅ Отправлено оператору";
+      } catch (e) {
+        document.getElementById("status").textContent = "❌ Ошибка при отправке";
       } finally {
-        btn.disabled = false;
+        document.getElementById("sendBtn").disabled = false;
       }
     }
 
-    calculate();
+    // Получаем client_id через Telegram WebApp
+    window.onload = function () {
+      if (window.Telegram && Telegram.WebApp && Telegram.WebApp.initDataUnsafe?.user) {
+        clientId = Telegram.WebApp.initDataUnsafe.user.id;
+      } else {
+        clientId = "неизвестен"; // fallback
+      }
+    };
   </script>
+
 </body>
 </html>
