@@ -2,30 +2,88 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>Калькулятор с процентной шкалой</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Калькулятор наценки + Telegram</title>
   <style>
-    body { font-family: Arial, sans-serif; max-width: 320px; margin: 20px auto; }
-    input { width: 100%; padding: 8px; font-size: 16px; }
-    #output { margin-top: 16px; font-weight: bold; }
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 400px;
+      margin: 30px auto;
+      padding: 0 15px;
+      background: #f0f0f5;
+      color: #222;
+    }
+    label {
+      font-weight: 600;
+      margin-top: 15px;
+      display: block;
+    }
+    input[type=number] {
+      width: 100%;
+      padding: 14px 12px;
+      font-size: 18px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 8px;
+      box-sizing: border-box;
+      -webkit-appearance: none;
+      -moz-appearance: textfield;
+    }
+    #output {
+      margin-top: 25px;
+      font-size: 20px;
+      font-weight: 700;
+      background: white;
+      padding: 15px 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.12);
+    }
+    button {
+      margin-top: 25px;
+      width: 100%;
+      padding: 15px;
+      font-size: 18px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+    button:disabled {
+      background: #a0a0a0;
+      cursor: not-allowed;
+    }
+    #status {
+      margin-top: 15px;
+      font-weight: 600;
+      color: green;
+    }
   </style>
 </head>
 <body>
 
-  <label>Введите сумму:
-    <input type="number" id="amount" value="0" step="0.01" oninput="calculate()" />
-  </label>
+  <h1>Калькулятор наценки</h1>
+
+  <label for="amount">Введите сумму:</label>
+  <input type="number" id="amount" step="0.01" value="0" oninput="calculate()" inputmode="decimal" />
 
   <div id="output"></div>
 
+  <button id="sendBtn" onclick="sendToTelegram()" disabled>Отправить оператору</button>
+
+  <div id="status"></div>
+
   <script>
-    // Задаём шкалу: [нижняя граница, верхняя граница, процент]
-    // верхняя граница включается в интервал
+    // Процентная шкала
     const scale = [
-      [0, 1000, 5.0],      // до 1000 — 5%
-      [1000.01, 5000, 4.0], // от 1000.01 до 5000 — 4%
-      [5000.01, 10000, 3.5],// от 5000.01 до 10000 — 3.5%
-      [10000.01, Infinity, 3.0] // больше 10000 — 3%
+      [0, 1000, 5.0],
+      [1000.01, 5000, 4.0],
+      [5000.01, 10000, 3.5],
+      [10000.01, Infinity, 3.0]
     ];
+
+    let currentTotal = 0;
 
     function calculate() {
       const amount = parseFloat(document.getElementById('amount').value) || 0;
@@ -40,16 +98,54 @@
 
       const fee = amount * (percent / 100);
       const total = amount + fee;
+      currentTotal = total;
 
       document.getElementById('output').innerHTML = `
         Процент наценки: ${percent.toFixed(2)}%<br>
         Наценка: ${fee.toFixed(2)}<br>
         Итоговая сумма: ${total.toFixed(2)}
       `;
+
+      document.getElementById('sendBtn').disabled = amount === 0;
+      document.getElementById('status').textContent = '';
     }
 
-    calculate(); // расчёт при загрузке страницы
-  </script>
+    async function sendToTelegram() {
+      // Настройки твоего бота — замени токен и chat_id на реальные
+      const botToken = '7825692414:AAHci2zncI1dTEovctk65SS6rEgoFLzaiXk';
+      const chatId = '5091528006';
 
+      const message = `Новая сумма от клиента: ${currentTotal.toFixed(2)}`;
+
+      const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
+      // Блокируем кнопку и показываем статус
+      const btn = document.getElementById('sendBtn');
+      btn.disabled = true;
+      document.getElementById('status').textContent = 'Отправляем...';
+
+      try {
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            chat_id: chatId,
+            text: message
+          })
+        });
+
+        if (!res.ok) throw new Error(`Ошибка: ${res.status}`);
+
+        document.getElementById('status').textContent = 'Отправлено успешно ✅';
+      } catch (err) {
+        document.getElementById('status').textContent = 'Ошибка при отправке ⚠️';
+        console.error(err);
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    calculate();
+  </script>
 </body>
 </html>
